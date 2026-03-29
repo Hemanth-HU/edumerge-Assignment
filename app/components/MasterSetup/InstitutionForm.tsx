@@ -56,7 +56,7 @@ export function InstitutionForm() {
                 {...register("name")}
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g., Delhi Institute of Technology"
+                placeholder="e.g., Banglore Institute of Technology"
               />
               {errors.name && (
                 <p className="text-red-500 text-sm mt-1">
@@ -73,7 +73,7 @@ export function InstitutionForm() {
                 {...register("code")}
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g., DIT"
+                placeholder="e.g., BIT"
               />
               {errors.code && (
                 <p className="text-red-500 text-sm mt-1">
@@ -90,7 +90,7 @@ export function InstitutionForm() {
                 {...register("city")}
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g., Delhi"
+                placeholder="e.g., Banglore"
               />
               {errors.city && (
                 <p className="text-red-500 text-sm mt-1">
@@ -107,7 +107,7 @@ export function InstitutionForm() {
                 {...register("state")}
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g., Delhi"
+                placeholder="e.g., Karnataka"
               />
               {errors.state && (
                 <p className="text-red-500 text-sm mt-1">

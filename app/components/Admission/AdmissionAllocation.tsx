@@ -107,6 +107,7 @@ export function AdmissionAllocationComponent() {
   });
 
   const onManagementSubmit = managementForm.handleSubmit((data) => {
+    console.log("FORM DATA:", data);
     try {
       const applicant = getApplicantById(data.applicantId);
       const program = getProgramById(data.programId);
@@ -116,23 +117,14 @@ export function AdmissionAllocationComponent() {
         return;
       }
 
-      // CRITICAL: Check seat availability in MANAGEMENT quota
       if (!canAllocateSeat(program, "Management")) {
-        setMessage(`❌ No management quota seats available in ${program.name}`);
+        setMessage(`❌ No management quota seats available`);
         return;
       }
 
-      // Allocate seat
-      const allocationResult = allocateSeat(program, "Management");
-      if (!allocationResult.success) {
-        setMessage(`❌ ${allocationResult.message}`);
-        return;
-      }
-
-      // Update program
+      allocateSeat(program, "Management");
       updateProgram(program.id, program);
 
-      // Create admission
       createAdmission({
         applicantId: applicant.id,
         programId: program.id,
@@ -145,21 +137,20 @@ export function AdmissionAllocationComponent() {
         status: "Allocated",
       });
 
-      // Update applicant status
       updateApplicant(applicant.id, {
         applicationStatus: "Allocated",
       });
 
-      setMessage(
-        `✅ Management seat allocated for ${applicant.name} in ${program.name}`,
-      );
+      setMessage("✅ Management seat allocated successfully!");
       managementForm.reset();
       triggerRefresh();
-      setTimeout(() => setMessage(""), 5000);
     } catch (error) {
-      setMessage("Error processing management allocation");
+      console.error(error);
+      setMessage("❌ Error processing management allocation");
     }
   });
+
+  console.log("FORM ERRORS:", managementForm.formState.errors);
 
   return (
     <div className="space-y-6 p-6 bg-white rounded-lg shadow">
@@ -310,6 +301,11 @@ export function AdmissionAllocationComponent() {
             </p>
 
             <form onSubmit={onManagementSubmit} className="space-y-4">
+              <input
+                type="hidden"
+                value="Management"
+                {...managementForm.register("quota")}
+              />
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -321,7 +317,11 @@ export function AdmissionAllocationComponent() {
                   >
                     <option value="">Select Applicant</option>
                     {applicants
-                      .filter((a) => a.applicationStatus !== "Confirmed")
+                      .filter(
+                        (a) =>
+                          a.quotaType === "Management" &&
+                          a.applicationStatus === "Applied",
+                      )
                       .map((app) => (
                         <option key={app.id} value={app.id}>
                           {app.name} - {app.email}
@@ -387,7 +387,6 @@ export function AdmissionAllocationComponent() {
             </form>
           </div>
         )}
-
         {/* Feedback Message */}
         {message && (
           <div

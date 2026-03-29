@@ -265,10 +265,11 @@ export function ProgramForm({ departments }: ProgramFormProps) {
                   <input
                     type="number"
                     min="0"
-                    value={quotas?.[quota] ?? 0}
-                    onChange={(e) =>
-                      handleQuotaChange(quota, parseInt(e.target.value) || 0)
-                    }
+                    value={quotas?.[quota] === 0 ? "" : (quotas?.[quota] ?? "")}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      handleQuotaChange(quota, val === "" ? 0 : Number(val));
+                    }}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="0"
                   />

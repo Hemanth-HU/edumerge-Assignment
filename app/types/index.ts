@@ -1,8 +1,3 @@
-/**
- * Core Type Definitions for Admission Management System
- * This file contains all TypeScript interfaces used across the application
- */
-
 // ============ MASTER SETUP TYPES ============
 
 export interface Institution {
@@ -109,9 +104,9 @@ export interface Applicant {
   name: string;
   email: string;
   phone: string;
-  category: string; // General, SC, ST, OBC, etc.
+  category: string; 
   entryType: "Regular" | "Lateral";
-  quotaType: string; // KCET, COMEDK, MANAGEMENT, etc.
+  quotaType: string;
   programApplied: string;
   marks: number;
   documentStatus: DocumentStatus;
